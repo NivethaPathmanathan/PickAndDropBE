@@ -7,6 +7,10 @@ const Customer = function(customer) {
   this.complaint = customer.complaint;
 };
 
+const Status = function(status){
+  this.StatusName = status.StatusName
+};
+
 Customer.create = (newCustomer, result) => {
   sql.query("INSERT INTO customer SET ?", newCustomer, (err, res) => {
     if (err) {
@@ -52,27 +56,17 @@ Customer.getAll = result => {
   });
 };
 
-Customer.updateById = (id, customer, result) => {
-  sql.query(
-    "UPDATE customer SET name = ?, email = ?, complaint = ? WHERE id = ?",
-    [customer.name, customer.email, customer.complaint, id],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-
-      if (res.affectedRows == 0) {
-        // not found Customer with the id
-        result({ kind: "not_found" }, null);
-        return;
-      }
-
-      console.log("updated customer: ", { id: id, ...customer });
-      result(null, { id: id, ...customer });
+Status.getAll = result => {
+  sql.query("SELECT * FROM status", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
     }
-  );
+
+    console.log("status: ", res);
+    result(null, res);
+  });
 };
 
 Customer.remove = (id, result) => {
