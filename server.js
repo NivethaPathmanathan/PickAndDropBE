@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 
 //include routes
  require("./app/routes/customer.route.js")(app);
+ require("./app/routes/status.route.js")(app);
 
 // set port, listen for requests
 app.listen(3000, () => {

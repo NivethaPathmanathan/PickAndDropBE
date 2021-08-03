@@ -5,10 +5,7 @@ const Customer = function(customer) {
   this.name = customer.name;
   this.email = customer.email;
   this.complaint = customer.complaint;
-};
-
-const Status = function(status){
-  this.StatusName = status.StatusName
+  this.statusId = customer.statusId;
 };
 
 Customer.create = (newCustomer, result) => {
@@ -52,19 +49,6 @@ Customer.getAll = result => {
     }
 
     console.log("customer: ", res);
-    result(null, res);
-  });
-};
-
-Status.getAll = result => {
-  sql.query("SELECT * FROM status", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log("status: ", res);
     result(null, res);
   });
 };

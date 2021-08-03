@@ -1,5 +1,4 @@
 const Customer = require("../models/customer.model.js");
-const Status = require("../models/customer.model.js");
 
 // Create and Save a new Customer
 exports.create = (req, res) => {
@@ -14,11 +13,8 @@ exports.create = (req, res) => {
   const customer = new Customer({
     name: req.body.name,
     email: req.body.email,
-    complaint: req.body.complaint
-  });
-
-  const status = new Status({
-    StatusName: req.body.StatusName
+    complaint: req.body.complaint,
+    statusId:req.body.statusId
   });
 
   // Save Customer in the database
@@ -43,17 +39,6 @@ exports.findAll = (req, res) => {
         else res.send(data);
       });
 };
-
-exports.findAll = (req, res) => {
-  Status.getAll((err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving status."
-        });
-      else res.send(data);
-    });
-}
 
 // Find a single Customer with a id
 exports.findOne = (req, res) => {
@@ -100,4 +85,31 @@ exports.deleteAll = (req, res) => {
           });
         else res.send({ message: `All customers were deleted successfully!` });
       });
+};
+
+exports.update = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+}
+
+Customer.updateById(
+  req.params.id,
+  new Customer(req.body),
+  (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Customer with CustomerId ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error updating Customer with CustomerId " + req.params.id
+        });
+      }
+    } else res.send(data);
+  }
+);
 };
