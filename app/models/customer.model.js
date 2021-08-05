@@ -53,6 +53,29 @@ Customer.getAll = result => {
   });
 };
 
+Customer.updateById = (id, customer, result) => {
+  sql.query(
+    "UPDATE customer SET name = ?, email = ?, complaint = ?, statusId = ? WHERE id = ?",
+    [customer.name, customer.email, customer.complaint, customer.statusId, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found customer with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated customer: ", { id: id, ...customer });
+      result(null, { id: id, ...customer });
+    }
+  );
+};
+
 Customer.remove = (id, result) => {
   sql.query("DELETE FROM customer WHERE id = ?", id, (err, res) => {
     if (err) {
