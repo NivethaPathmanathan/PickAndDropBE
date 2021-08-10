@@ -11,7 +11,7 @@ module.exports = app => {
     app.get("/customer/:id", customer.findOne);
 
     // Update status with CustomerId
-    app.put("/customer/:id", customer.update);
+    app.put("/customer/:id", customer.updateById);
   
     // Delete a Customer with customerId
     app.delete("/customer/:id", customer.delete);

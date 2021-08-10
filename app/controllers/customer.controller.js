@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     email: req.body.email,
     complaint: req.body.complaint,
-    statusId:req.body.statusId
+   // statusId:req.body.statusId
   });
 
   // Save Customer in the database
@@ -87,7 +87,7 @@ exports.deleteAll = (req, res) => {
       });
 };
 
-exports.update = (req, res) => {
+exports.updateById = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
